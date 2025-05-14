@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soil Moisture Monitoring</title>
+    <title>Мониторинг влажности почвы</title>
 </head>
 <body>
-    <h1>Soil Moisture Monitoring</h1>
-    <p>Current Soil Dryness: {{ moisture }}%</p>
-    <p>Irrigation Threshold: {{ threshold }}%</p>
+<h1>Мониторинг влажности почвы</h1>
+<p>Текущая сухость почвы: {{ moisture }}%</p>
+<p>Порог влажности для полива: {{ threshold }}%</p>
 
-    <form action="/threshold" method="post">
-        <label for="threshold">Set Dryness Threshold (%):</label>
-        <input type="number" id="threshold" name="threshold" step="1" min="0" max="100" required>
-        <input type="submit" value="Update Threshold">
-    </form>
+<form action="/threshold" method="post">
+    <label for="threshold">Установить порог сухости (%):</label>
+    <input type="number" id="threshold" name="threshold" step="1" min="0" max="100" required>
+    <input type="submit" value="Обновить порог">
+</form>
 </body>
 </html>

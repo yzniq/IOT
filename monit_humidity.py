@@ -1,22 +1,34 @@
 import os
-from bottle import Bottle, template, run
-from gpiozero import MCP3008
+from bottle import Bottle, template, request, run
+from gpiozero import MCP3008, OutputDevice
 import time
 
-# Настройки
-moisture_channel = 0  # канал MCP3008 для датчика влажности
+relay_pin = 17  # пин, к которому подключено реле (насос/клапан)
+moisture_channel = 0 #канал MCP3008, на который подключён датчик влажности
+
+
+threshold = 0.4 #уровень влажности, при котором включается полив
+
+relay = OutputDevice(relay_pin)
 adc = MCP3008(moisture_channel)
 
 app = Bottle()
 
 def read_soil_moisture():
     try:
-        value = adc.value  # значение от 0.0 (влажно) до 1.0 (сухо)
-        percentage = (1 - value) * 100  # преобразуем в проценты сухости
+        value = adc.value  #значение от 0.0 сухо до 1.0 влажно
+        percentage = (1 - value) * 100  #сухость в проценты
         return round(percentage, 1)
     except Exception as e:
         print(f"Ошибка чтения датчика влажности: {e}")
         return None
+
+def control_irrigation(threshold_value):
+    moisture = adc.value
+    if moisture < threshold_value:
+        relay.on()
+    else:
+        relay.off()
 
 @app.route('/')
 def index():
